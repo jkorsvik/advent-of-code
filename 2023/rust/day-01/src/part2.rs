@@ -1,11 +1,8 @@
 use crate::custom_error::AocError;
 
 #[tracing::instrument]
-pub fn process(
-    input: &str,
-) -> miette::Result<String, AocError> {
-    let output =
-        input.lines().map(process_line).sum::<u32>();
+pub fn process(input: &str) -> miette::Result<String, AocError> {
+    let output = input.lines().map(process_line).sum::<u32>();
 
     Ok(output.to_string())
 }
@@ -37,6 +34,7 @@ fn process_line(line: &str) -> u32 {
 
         result.to_digit(10)
     });
+
     let first = it.next().expect("should be a number");
 
     match it.last() {
@@ -52,7 +50,6 @@ mod tests {
     use super::*;
 
     use rstest::rstest;
-
     #[rstest]
     #[case("two1nine", 29)]
     #[case("eightwothree", 83)]
@@ -65,10 +62,7 @@ mod tests {
     /// it tests two overlapping numbers
     /// where the second number should succeed
     #[case("fivezg8jmf6hrxnhgxxttwoneg", 51)]
-    fn line_test(
-        #[case] line: &str,
-        #[case] expected: u32,
-    ) {
+    fn line_test(#[case] line: &str, #[case] expected: u32) {
         assert_eq!(expected, process_line(line))
     }
 
